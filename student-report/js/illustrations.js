@@ -55,15 +55,16 @@
         fill="#7a4a33" stroke="${C.line}" stroke-width="4" stroke-linejoin="round"/>`,
   };
 
-  function face(kind) {
-    const back = { girl: hair.girlBack, teacher: hair.teacherBack, mom: hair.momBack }[kind] || '';
-    const front = { boy: hair.boyFront, girl: hair.girlFront, teacher: hair.teacherFront, mom: hair.momFront }[kind] || '';
+  const HAIR_BACK = { girl: hair.girlBack, teacher: hair.teacherBack, mom: hair.momBack };
+  const HAIR_FRONT = { boy: hair.boyFront, girl: hair.girlFront, teacher: hair.teacherFront, mom: hair.momFront };
+
+  // 耳・顔・前髪・表情（後ろ髪は含まない）
+  function faceCore(kind) {
     return `
-      ${back}
       <circle cx="44" cy="110" r="12" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
       <circle cx="156" cy="110" r="12" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
       <ellipse cx="100" cy="106" rx="57" ry="53" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
-      ${front}
+      ${HAIR_FRONT[kind] || ''}
       <path d="M69 110 Q78 99 87 110" fill="none" stroke="${C.line}" stroke-width="5" stroke-linecap="round"/>
       <path d="M113 110 Q122 99 131 110" fill="none" stroke="${C.line}" stroke-width="5" stroke-linecap="round"/>
       <ellipse cx="64" cy="126" rx="11" ry="7" fill="${C.cheek}" opacity="0.75"/>
@@ -71,6 +72,24 @@
       <path d="M85 126 Q100 150 115 126 Q100 131 85 126 Z" fill="${C.mouth}" stroke="${C.line}" stroke-width="3.5" stroke-linejoin="round"/>
       <path d="M92 137 Q100 144 108 137 Q100 133 92 137 Z" fill="${C.tongue}"/>`;
   }
+
+  // 上半身（ローカル座標 200x240。重なり順：後ろ髪 → 首 → 服 → 顔）
+  function person(kind, shirt, details = '') {
+    return `
+      ${HAIR_BACK[kind] || ''}
+      <rect x="86" y="140" width="28" height="44" rx="8" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
+      <path d="M18 240 C20 200 52 176 100 176 C148 176 180 200 182 240 Z" fill="${shirt}" stroke="${C.line}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M82 177 Q100 196 118 177 Z" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5" stroke-linejoin="round"/>
+      ${details}
+      ${faceCore(kind)}`;
+  }
+
+  // そろばんの上の縁をつかむ手（指先だけ見える）
+  const grip = (x, y) => `
+    <g transform="translate(${x} ${y})">
+      <rect x="-15" y="-10" width="30" height="24" rx="10" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5"/>
+      <path d="M-6 3 L-6 12 M1 3 L1 12 M8 3 L8 11" stroke="${C.line}" stroke-width="2.4" stroke-linecap="round"/>
+    </g>`;
 
   /* ---------- そろばん ---------- */
 
@@ -228,74 +247,63 @@
 
   /* ---------- キャラクター ---------- */
 
-  const avatarBoy = svg('0 0 200 200', `
-    <path d="M52 200 C54 170 74 156 100 156 C126 156 146 170 148 200 Z" fill="#ffd66b" stroke="${C.line}" stroke-width="4"/>
-    <g transform="translate(0 -6)">${face('boy')}</g>`);
+  const avatar = (kind, shirt) => svg('0 0 200 200', `<g transform="translate(0 -8)">${person(kind, shirt)}</g>`);
+  const avatarBoy = avatar('boy', '#ffd66b');
+  const avatarGirl = avatar('girl', '#ffb3c6');
 
-  const avatarGirl = svg('0 0 200 200', `
-    <path d="M52 200 C54 170 74 156 100 156 C126 156 146 170 148 200 Z" fill="#ffb3c6" stroke="${C.line}" stroke-width="4"/>
-    <g transform="translate(0 -6)">${face('girl')}</g>`);
+  const heart = (x, y, s, color = '#ff8fab') =>
+    `<path transform="translate(${x} ${y}) scale(${s})" d="M0 6 C-10 -2 -14 -8 -10 -13 C-6 -18 -1 -15 0 -11 C1 -15 6 -18 10 -13 C14 -8 10 -2 0 6 Z" fill="${color}"/>`;
+
+  // はなまる（先生が花丸をつけるときの形）
+  function hanamaru(x, y, s) {
+    let petals = '';
+    for (let i = 0; i < 7; i++) {
+      petals += `<ellipse cx="0" cy="-17" rx="8" ry="10" transform="rotate(${(360 / 7) * i})"/>`;
+    }
+    return `<g transform="translate(${x} ${y}) scale(${s})" fill="#fff5f6" stroke="#e8505b" stroke-width="3.2">
+      ${petals}
+      <circle r="13" fill="#fff5f6"/>
+      <path d="M1 0 A3 3 0 1 0 -2 3 A6 6 0 1 0 6 -4" fill="none" stroke-linecap="round"/>
+    </g>`;
+  }
 
   const heroKid = svg('0 0 300 300', `
-    <circle cx="262" cy="232" r="46" fill="#e4f4dc"/>
-    <circle cx="250" cy="40" r="30" fill="#eef6ee"/>
-    <circle cx="276" cy="52" r="22" fill="#eef6ee"/>
-    ${sparklePath(30, 60, 1.6)}
-    ${sparklePath(62, 26, 0.8)}
-    ${sparklePath(282, 110, 1.5)}
-    ${sparklePath(270, 178, 1.1)}
-    <path d="M44 42 L30 30 M52 30 L50 16" stroke="#ffd23f" stroke-width="5" stroke-linecap="round"/>
-    <path d="M70 300 C72 238 104 212 150 212 C196 212 228 238 230 300 Z" fill="#8ccaf0" stroke="${C.line}" stroke-width="4"/>
-    <path d="M214 238 C226 222 236 200 244 160" fill="none" stroke="${C.line}" stroke-width="34" stroke-linecap="round"/>
-    <path d="M214 238 C226 222 236 200 244 160" fill="none" stroke="#8ccaf0" stroke-width="26" stroke-linecap="round"/>
-    <path d="M241 176 C243 166 244 158 246 146" fill="none" stroke="${C.line}" stroke-width="30" stroke-linecap="round"/>
-    <path d="M241 176 C243 166 244 158 246 146" fill="none" stroke="${C.skin}" stroke-width="22" stroke-linecap="round"/>
-    <rect x="224" y="104" width="46" height="46" rx="18" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
-    <path d="M236 108 L236 122 M248 106 L248 122 M260 108 L260 122" stroke="${C.line}" stroke-width="3" stroke-linecap="round"/>
-    <path d="M226 128 C236 124 244 130 242 140" fill="none" stroke="${C.line}" stroke-width="3" stroke-linecap="round"/>
-    <path d="M274 92 L284 80 M262 88 L264 72 M284 106 L298 102" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
-    <g transform="translate(46 22) scale(0.98)">${face('boy')}</g>
-    <g transform="translate(34 206) rotate(-9)">
-      ${abacusBody(196, 96, 9, ABACUS_PATTERN)}
-    </g>
-    <ellipse cx="42" cy="252" rx="16" ry="18" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>
-    <ellipse cx="224" cy="222" rx="15" ry="17" fill="${C.skin}" stroke="${C.line}" stroke-width="4"/>`, 'illust-hero');
+    <circle cx="150" cy="128" r="112" fill="#fff4cc"/>
+    <circle cx="262" cy="250" r="40" fill="#e4f4dc"/>
+    ${sparklePath(34, 62, 1.6)}
+    ${sparklePath(64, 26, 0.8)}
+    ${sparklePath(270, 70, 1.5)}
+    ${sparklePath(252, 34, 0.7)}
+    <path d="M46 44 L32 32 M56 30 L54 16 M256 102 L272 96 M246 90 L256 78" stroke="#ffd23f" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(50 6) rotate(-4 100 120)">${person('boy', '#8ccaf0')}</g>
+    <g transform="translate(40 192) rotate(-5 110 50)">
+      ${abacusBody(220, 100, 9, ABACUS_PATTERN)}
+      ${grip(46, 2)}
+      ${grip(174, 2)}
+    </g>`, 'illust-hero');
 
   const teacher = svg('0 0 220 250', `
-    <path d="M36 250 C38 196 68 172 110 172 C152 172 182 196 184 250 Z" fill="#fff7f2" stroke="${C.line}" stroke-width="4"/>
-    <path d="M64 250 L68 196 C84 202 136 202 152 196 L156 250 Z" fill="#f7a3b8" stroke="${C.line}" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M78 196 L84 176 M142 196 L136 176" stroke="${C.line}" stroke-width="4" stroke-linecap="round"/>
-    <path d="M168 214 C186 202 196 186 198 164" fill="none" stroke="${C.line}" stroke-width="28" stroke-linecap="round"/>
-    <path d="M168 214 C186 202 196 186 198 164" fill="none" stroke="#fff7f2" stroke-width="20" stroke-linecap="round"/>
-    <g transform="translate(198 140) rotate(12)">
-      <rect x="-9" y="-30" width="9" height="26" rx="4.5" fill="${C.skin}" stroke="${C.line}" stroke-width="3"/>
-      <rect x="0" y="-34" width="9" height="30" rx="4.5" fill="${C.skin}" stroke="${C.line}" stroke-width="3"/>
-      <rect x="9" y="-30" width="9" height="26" rx="4.5" fill="${C.skin}" stroke="${C.line}" stroke-width="3"/>
-      <rect x="-15" y="-10" width="36" height="30" rx="12" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5"/>
-      <path d="M-20 2 C-30 -4 -32 -12 -26 -16 C-22 -18 -16 -12 -12 -6" fill="${C.skin}" stroke="${C.line}" stroke-width="3" stroke-linejoin="round"/>
-    </g>
-    <path d="M214 108 L220 98 M218 128 L230 124" stroke="${C.line}" stroke-width="3" stroke-linecap="round" opacity=".6"/>
-    <g transform="translate(58 200) rotate(-6)">
-      <rect x="0" y="0" width="54" height="60" rx="5" fill="#b07a4a" stroke="${C.line}" stroke-width="3.5"/>
-      <rect x="7" y="9" width="40" height="46" rx="2" fill="#ffffff"/>
-      <rect x="17" y="-5" width="20" height="10" rx="3" fill="#c9c9c9" stroke="${C.line}" stroke-width="3"/>
-    </g>
-    <ellipse cx="68" cy="222" rx="13" ry="15" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5"/>
-    <g transform="translate(14 0) scale(0.92)">${face('teacher')}</g>`, 'illust-teacher');
+    ${hanamaru(186, 40, 0.95)}
+    ${sparklePath(26, 34, 0.9)}
+    <g transform="translate(4 34) scale(0.9)">${person('teacher', '#fffaf5', `
+      <path d="M66 240 L70 206 Q100 214 130 206 L134 240 Z" fill="#f7a3b8" stroke="${C.line}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M72 207 L80 182 M128 207 L120 182" stroke="${C.line}" stroke-width="4" stroke-linecap="round"/>
+      <rect x="86" y="218" width="28" height="15" rx="4" fill="#ffffff" stroke="${C.line}" stroke-width="2.5"/>
+      <circle cx="93" cy="225.5" r="3" fill="#f7a3b8"/>`)}</g>`, 'illust-teacher');
 
   const parentChild = svg('0 0 260 240', `
-    ${sparklePath(20, 150, 1.1)}
-    ${sparklePath(240, 36, 0.9)}
-    <path d="M26 30 L14 20 M34 22 L32 8" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
-    <path d="M110 240 C112 170 136 146 176 146 C216 146 240 170 244 240 Z" fill="#f59a9a" stroke="${C.line}" stroke-width="4"/>
-    <g transform="translate(96 -2) scale(0.8)">${face('mom')}</g>
-    <path d="M18 240 C20 200 40 186 76 186 C112 186 132 200 134 240 Z" fill="#6aa9e8" stroke="${C.line}" stroke-width="4"/>
-    <g transform="translate(6 72) scale(0.7)">${face('boy')}</g>
-    <g transform="translate(30 196)">
-      ${abacusBody(96, 44, 7, ABACUS_PATTERN)}
-    </g>
-    <ellipse cx="34" cy="218" rx="11" ry="12" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5"/>
-    <ellipse cx="122" cy="218" rx="11" ry="12" fill="${C.skin}" stroke="${C.line}" stroke-width="3.5"/>`, 'illust-parent');
+    ${sparklePath(242, 30, 0.9)}
+    ${sparklePath(18, 132, 1.0)}
+    ${heart(122, 54, 1.3)}
+    ${heart(142, 30, 0.8, '#ffb3c6')}
+    <g transform="translate(100 48) scale(0.8)">${person('mom', '#f59a9a', `
+      <circle cx="100" cy="206" r="4" fill="#ffffff" stroke="${C.line}" stroke-width="2"/>`)}</g>
+    <g transform="translate(8 90) scale(0.64)">${person('boy', '#6aa9e8')}</g>
+    <g transform="translate(14 192)">
+      ${abacusBody(112, 46, 7, ABACUS_PATTERN)}
+      ${grip(26, 1)}
+      ${grip(86, 1)}
+    </g>`, 'illust-parent');
 
   window.ILLUST = {
     icons,

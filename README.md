@@ -56,6 +56,7 @@ student-report/
 ├── css/report.css        レポート画像のデザイン（幅760px固定）
 ├── js/config.js          定型文・候補リスト・記入例
 ├── js/illustrations.js   イラスト（すべてSVG。画像ファイル不要）
+├── js/logo.js           こどもスクールのロゴ（PNGをデータとして埋め込み）
 ├── js/app.js             入力→プレビュー反映、PNG保存・コピー・共有
 └── vendor/html2canvas.min.js  画面をPNG化するライブラリ（MIT License）
 ```

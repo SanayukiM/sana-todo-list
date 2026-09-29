@@ -24,6 +24,7 @@
     abacusSmall: IL.abacus(96, 60, 6),
     avatarBoy: IL.avatar.boy,
     avatarGirl: IL.avatar.girl,
+    logo: `<img src="${window.REPORT_LOGO}" alt="こどもスクール">`,
   };
   document.querySelectorAll('[data-illust]').forEach((el) => {
     el.innerHTML = illustrations[el.dataset.illust] || '';
