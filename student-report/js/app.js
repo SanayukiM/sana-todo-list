@@ -141,10 +141,20 @@
     if (el.scrollWidth > el.clientWidth + 0.5) el.classList.add('wrap');
   }
 
+  // 名前：1割以上縮めないと入らないときは、敬称を2行目に回してから縮める
+  function fitName() {
+    const box = $('rNameBox');
+    const shrunk = parseFloat(box.style.fontSize) < 25;
+    if (!shrunk && !box.classList.contains('wrap')) return;
+    box.classList.add('stack');
+    fitText(box);
+  }
+
   function render() {
     const d = readForm();
     setText($('rSchool'), d.schoolName, '教室名');
     setText($('rName'), d.studentName, '生徒名');
+    $('rNameBox').classList.remove('stack');
     $('rHonorific').textContent = d.honorific;
     $('rAvatar').innerHTML = IL.avatar[d.avatar] || IL.avatar.boy;
     setText($('rStudy'), d.currentStudy, '珠算 〇級');
@@ -156,6 +166,7 @@
     setText($('rAdvice'), d.parentAdvice, 'お家の方へのお願い・アドバイスを入力してください');
 
     report.querySelectorAll('.fit').forEach(fitText);
+    fitName();
     updateCounters(d);
     updateScale();
     saveDraft(d);
