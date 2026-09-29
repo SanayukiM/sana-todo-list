@@ -21,7 +21,6 @@
     teacher: IL.teacher,
     parentChild: IL.parentChild,
     abacus: IL.abacus(200, 112, 9),
-    abacusSmall: IL.abacus(96, 60, 6),
     avatarBoy: IL.avatar.boy,
     avatarGirl: IL.avatar.girl,
     logo: `<img src="${window.REPORT_LOGO}" alt="こどもスクール">`,
