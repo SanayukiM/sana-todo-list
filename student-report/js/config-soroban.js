@@ -1,11 +1,24 @@
 /*
- * 進捗レポート作成ツールの設定ファイル
+ * そろばんコースの設定
  * ------------------------------------------------------------
- * 入力欄の定型文・候補リスト・記入例をこのファイルで管理しています。
+ * 定型文・入力候補・記入例・しめくくりの文をこのファイルで管理しています。
  * 定型文を追加・変更したいときは、このファイルだけを編集すればOKです。
- * （レポートの固定デザイン・固定文言は index.html と css/report.css にあります）
+ * （かきかた書道コースは config-shodo.js、共通のデザインは index.html と css/report.css）
  */
-window.REPORT_CONFIG = {
+window.REPORT_COURSES = window.REPORT_COURSES || {};
+window.REPORT_COURSES.soroban = {
+  label: 'そろばん',
+  toolTitle: 'そろばん進捗レポート',
+
+  // レポートに入るイラスト（illustrations.js の名前）
+  illustrations: { hero: 'heroSoroban', parent: 'parentSoroban', closing: 'closingSoroban' },
+
+  // ピンクの枠のしめくくりの文（<em> は色付き、class="big" は大きな文字）
+  closing: {
+    main: 'そろばんは、乗り越えたときの<em>達成感</em>が<br><em class="big">大きな自信</em>に繋がります。',
+    sub: '引き続き、スタッフ一同全力でサポートしてまいります！',
+  },
+
   // 教室名の初期値（画面の「教室の設定」から変更でき、ブラウザに保存されます）
   defaultSchoolName: '十軒そろばん教室',
 
@@ -27,6 +40,9 @@ window.REPORT_CONFIG = {
 
   // 「現在の学習」の入力候補
   studySuggestions: [
+    'わくそろ1', 'わくそろ2',
+    'ちびそろ0', 'ちびそろ1', 'ちびそろ2', 'ちびそろ3', 'ちびそろ4', 'ちびそろ5', 'ちびそろ6',
+    'ドリル1', 'ドリル2',
     '珠算 10級', '珠算 9級', '珠算 8級', '珠算 7級', '珠算 6級',
     '珠算 5級', '珠算 4級', '珠算 3級', '珠算 2級', '珠算 1級',
     '珠算 準初段', '珠算 初段',

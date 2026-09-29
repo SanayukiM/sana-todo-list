@@ -30,7 +30,8 @@
 .report *::after { box-sizing: border-box; }
 .report p,
 .report h2 { margin: 0; }
-.report [data-illust] > svg { display: block; width: 100%; height: 100%; }
+.report [data-illust] > svg,
+.report [data-slot] > svg { display: block; width: 100%; height: 100%; }
 
 /* ---------- ヘッダー ---------- */
 .r-hero { position: relative; height: 222px; }

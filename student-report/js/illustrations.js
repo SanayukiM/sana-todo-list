@@ -305,12 +305,83 @@
       ${grip(86, 1)}
     </g>`, 'illust-parent');
 
+  /* ---------- かきかた書道 ---------- */
+
+  const INK = '#231d1a';
+  // 筆で書いた「大」（100x100 の枠）
+  const DAI = `
+    <path d="M14 41 C14 36 19 34 24 36 C40 38 60 35 78 32 C84 30 90 33 88 38 C86 42 80 42 76 41 C60 42 40 45 24 46 C18 47 14 45 14 41 Z" fill="${INK}"/>
+    <path d="M47 10 C52 7 58 10 57 17 C57 30 56 44 53 56 C48 72 34 86 12 95 C30 82 41 68 45 54 C47 44 47 30 46 18 C45 14 45 12 47 10 Z" fill="${INK}"/>
+    <path d="M53 50 C58 62 67 74 78 82 C84 86 92 88 96 90 C92 94 84 96 76 94 C66 90 58 78 51 56 Z" fill="${INK}"/>`;
+
+  // 半紙（左下に小さく名前を書いた跡）
+  function hanshi(w, h, daiSize, daiX, daiY) {
+    const s = daiSize / 100;
+    return `
+      <rect x="3" y="3" width="${w}" height="${h}" rx="3" fill="#e7dfcf"/>
+      <rect x="0" y="0" width="${w}" height="${h}" rx="3" fill="#fffef9" stroke="${C.line}" stroke-width="3"/>
+      <g transform="translate(${daiX} ${daiY}) scale(${s})">${DAI}</g>
+      <path d="M${w * 0.1} ${h * 0.62} l0 5 M${w * 0.1} ${h * 0.62 + 9} l0 5 M${w * 0.1} ${h * 0.62 + 18} l0 5" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" opacity="0.75"/>`;
+  }
+
+  const heroShodo = svg('0 0 300 300', `
+    <circle cx="150" cy="128" r="112" fill="#fff4cc"/>
+    <circle cx="262" cy="250" r="40" fill="#e4f4dc"/>
+    ${sparklePath(34, 62, 1.6)}
+    ${sparklePath(64, 26, 0.8)}
+    ${sparklePath(270, 70, 1.5)}
+    ${sparklePath(252, 34, 0.7)}
+    <path d="M46 44 L32 32 M56 30 L54 16 M256 102 L272 96 M246 90 L256 78" stroke="#ffd23f" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(50 6) rotate(-4 100 120)">${person('boy', '#8ccaf0')}</g>
+    <g transform="translate(64 176) rotate(-4 88 60)">
+      ${hanshi(176, 150, 92, 42, 14)}
+      ${grip(30, 2)}
+      ${grip(146, 2)}
+    </g>`, 'illust-hero');
+
+  const parentShodo = svg('0 0 260 240', `
+    ${sparklePath(242, 30, 0.9)}
+    ${sparklePath(18, 132, 1.0)}
+    ${heart(122, 54, 1.3)}
+    ${heart(142, 30, 0.8, '#ffb3c6')}
+    <g transform="translate(100 48) scale(0.8)">${person('mom', '#f59a9a', `
+      <circle cx="100" cy="206" r="4" fill="#ffffff" stroke="${C.line}" stroke-width="2"/>`)}</g>
+    <g transform="translate(8 90) scale(0.64)">${person('boy', '#6aa9e8')}</g>
+    <g transform="translate(18 186)">
+      ${hanshi(104, 64, 50, 30, 5)}
+      ${grip(20, 1)}
+      ${grip(84, 1)}
+    </g>`, 'illust-parent');
+
+  // 硯と筆
+  const closingShodo = svg('0 0 200 112', `
+    ${sparklePath(186, 92, 0.8)}
+    <g transform="translate(14 8)">
+      <rect x="0" y="0" width="74" height="96" rx="14" fill="#4a4445" stroke="${C.line}" stroke-width="4"/>
+      <rect x="9" y="30" width="56" height="58" rx="9" fill="#5b5456"/>
+      <rect x="9" y="8" width="56" height="18" rx="9" fill="#171314"/>
+      <ellipse cx="26" cy="15" rx="8" ry="3" fill="#ffffff" opacity="0.28"/>
+      <path d="M20 46 C30 42 44 44 54 50" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.18"/>
+    </g>
+    <g transform="translate(124 70) rotate(-42)">
+      <rect x="0" y="-6" width="84" height="12" rx="6" fill="#e8c98a" stroke="${C.line}" stroke-width="3"/>
+      <path d="M30 -6 L30 6 M60 -6 L60 6" stroke="#b8924f" stroke-width="2.5"/>
+      <rect x="-8" y="-7" width="10" height="14" rx="2" fill="#a13d33" stroke="${C.line}" stroke-width="3"/>
+      <path d="M-8 -7 C-20 -7 -34 -3 -42 0 C-34 3 -20 7 -8 7 Z" fill="${INK}" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="90" cy="0" r="5" fill="none" stroke="#e8505b" stroke-width="3"/>
+    </g>`, 'illust-abacus');
+
   window.ILLUST = {
     icons,
     abacus,
-    heroKid,
     avatar: { boy: avatarBoy, girl: avatarGirl },
     teacher,
-    parentChild,
+    // コースごとに入れ替わるイラスト（config-*.js の illustrations で指定）
+    heroSoroban: heroKid,
+    parentSoroban: parentChild,
+    closingSoroban: abacus(200, 112, 9),
+    heroShodo,
+    parentShodo,
+    closingShodo,
   };
 })();

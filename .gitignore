@@ -1,0 +1,6 @@
+# 生徒の個人情報（一括作成の入力CSVと出力画像）は GitHub に入れない
+student-report/batch/input/
+student-report/batch/out/
+# Artifact 用のビルド結果（artifact/build.mjs で作り直せる）
+student-report/artifact/dist/
+node_modules/
