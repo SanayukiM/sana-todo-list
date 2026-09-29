@@ -1,0 +1,187 @@
+/* 入力画面（ツール本体）のスタイル */
+:root {
+  --bg: #f5f1e8;
+  --panel: #ffffff;
+  --ink: #3b332d;
+  --muted: #847a70;
+  --line: #e4ddd1;
+  --green: #3f9d5d;
+  --green-dark: #2f7d49;
+  --green-soft: #e9f5ec;
+  --focus: rgba(63, 157, 93, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ---------- ヘッダー ---------- */
+.app-header { background: var(--panel); border-bottom: 1px solid var(--line); }
+.app-header-inner { display: flex; align-items: center; gap: 14px; max-width: 1360px; margin: 0 auto; padding: 12px 20px; }
+.app-logo { flex: none; width: 56px; height: 36px; }
+.app-logo > svg { display: block; width: 100%; height: 100%; }
+.app-title { margin: 0; font-size: 20px; font-weight: 800; }
+.app-subtitle { margin: 0; color: var(--muted); font-size: 13px; }
+
+/* ---------- レイアウト ---------- */
+.app {
+  display: grid;
+  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; }
+.form-panel { padding: 18px 20px 22px; }
+.preview-panel { position: sticky; top: 16px; padding: 14px; }
+
+/* ---------- フォーム ---------- */
+.field { margin-top: 18px; }
+.field > label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 800; }
+.row { display: flex; gap: 8px; }
+.grow { flex: 1; min-width: 0; }
+
+input[type='text'], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: #fffdfa;
+  font-size: 16px; /* iPhoneで拡大されないように16px以上 */
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input[type='text']:focus, select:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--focus); }
+textarea { display: block; min-height: 108px; resize: vertical; line-height: 1.7; }
+select { cursor: pointer; }
+.row .honorific { width: auto; flex: none; }
+.row .goal-when { width: 40%; flex: none; }
+
+.tpl-select { margin-bottom: 8px; border-style: dashed; background: var(--green-soft); color: var(--green-dark); font-weight: 700; }
+
+.hint { margin: 6px 0 0; color: var(--muted); font-size: 12.5px; }
+.tpl-hint { margin: -2px 0 8px; }
+.field-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.counter { color: var(--muted); font-size: 12.5px; }
+.counter.over { color: #d9534f; }
+
+.avatar-choice { display: flex; gap: 8px; margin-top: 10px; }
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px 4px 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip:has(input:checked) { border-color: var(--green); background: var(--green-soft); color: var(--green-dark); }
+.chip:has(input:focus-visible) { box-shadow: 0 0 0 4px var(--focus); }
+.chip-face { width: 30px; height: 30px; overflow: hidden; border-radius: 50%; background: #cfe8fb; }
+.chip-face > svg { display: block; width: 100%; height: 100%; }
+
+.settings { padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: #fcfaf5; }
+.settings summary { cursor: pointer; font-size: 14px; font-weight: 800; }
+.settings .field { margin-top: 10px; }
+
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px dashed var(--line); }
+
+/* ---------- ボタン ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  transition: transform 0.08s, background 0.15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { cursor: progress; opacity: 0.6; }
+.btn.primary { background: var(--green); box-shadow: 0 3px 0 var(--green-dark); color: #fff; }
+.btn.primary:hover { background: #46a866; }
+.btn.secondary { border-color: var(--green); background: #fff; color: var(--green-dark); }
+.btn.secondary:hover { background: var(--green-soft); }
+.btn.ghost { border-color: var(--line); background: #fff; }
+.btn.ghost:hover { background: #faf7f1; }
+.btn[hidden] { display: none; }
+.link-btn { padding: 2px 4px; border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 13px; text-decoration: underline; }
+.link-btn:hover { color: var(--ink); }
+
+/* ---------- プレビュー ---------- */
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.toolbar .btn.primary { flex: 1 1 180px; font-size: 16px; }
+.preview-frame { padding: 16px; border-radius: 14px; background: #e8e2d6; }
+.preview-holder { margin: 0 auto; overflow: hidden; border-radius: 6px; box-shadow: 0 6px 24px rgba(60, 45, 30, 0.18); }
+.preview-scaler { width: 760px; transform-origin: 0 0; }
+.preview-note { margin: 10px 2px 0; color: var(--muted); font-size: 12px; }
+
+/* ---------- 通知 ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 100;
+  max-width: calc(100% - 32px);
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: rgba(40, 34, 30, 0.92);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.error { background: #c9443f; }
+
+/* ---------- スマホ・タブレット ---------- */
+@media (max-width: 920px) {
+  .app { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 12px; }
+  .preview-panel { position: static; }
+  .form-panel { padding: 14px 16px 18px; }
+  .preview-frame { padding: 10px; }
+  .app-header-inner { padding: 10px 16px; }
+  .app-subtitle { font-size: 12px; }
+
+  /* スマホでは保存ボタンを画面下に固定して、いつでも押せるようにする */
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .toolbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 -4px 16px rgba(60, 45, 30, 0.08);
+  }
+  .toolbar .btn { flex: 1 1 0; padding: 10px 8px; }
+  .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
+}

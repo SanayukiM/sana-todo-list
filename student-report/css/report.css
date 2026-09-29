@@ -1,0 +1,214 @@
+/*
+ * レポート画像の固定デザイン
+ * 幅 760px 固定。PNG保存時は 2倍（横1520px）で書き出します。
+ * ※ PNG化（html2canvas）で崩れないよう、filter / mix-blend-mode / background-clip:text などは使っていません。
+ */
+.report {
+  --ink: #4a3528;
+  --text: #3d3834;
+  --green: #3f9d5d;
+  --green-dark: #2f7d49;
+  --pink: #ec5f86;
+
+  box-sizing: border-box;
+  position: relative;
+  width: 760px;
+  padding: 22px 26px 20px;
+  overflow: hidden;
+  background: #fffdf8;
+  color: var(--text);
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+.report *,
+.report *::before,
+.report *::after { box-sizing: border-box; }
+.report p,
+.report h2 { margin: 0; }
+.report [data-illust] > svg { display: block; width: 100%; height: 100%; }
+
+/* ---------- ヘッダー ---------- */
+.r-hero { position: relative; height: 222px; }
+.r-hero-text { position: relative; z-index: 1; padding-top: 6px; }
+
+.r-school { display: flex; align-items: center; gap: 12px; }
+.r-school-name {
+  display: inline-block;
+  max-width: 440px;
+  padding: 6px 26px 9px;
+  border-radius: 18px;
+  background: var(--green);
+  box-shadow: 0 5px 0 var(--green-dark);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.r-school-abacus { flex: none; width: 70px; height: 44px; transform: rotate(-10deg); }
+
+.r-title-wrap { position: relative; display: inline-block; margin-top: 24px; padding-left: 30px; }
+.r-title {
+  position: relative;
+  z-index: 1;
+  color: var(--ink);
+  font-size: 45px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.r-title-no { margin: 0 2px; font-size: 32px; }
+.r-title-b { color: var(--green); }
+.r-title-swash {
+  position: absolute;
+  z-index: 0;
+  left: 34px;
+  right: -8px;
+  bottom: -4px;
+  height: 16px;
+  border-radius: 10px;
+  background: #ffea8f;
+  transform: rotate(-1deg);
+}
+.r-title-dash { position: absolute; left: 0; top: 10px; width: 22px; height: 38px; }
+.r-title-note { position: absolute; z-index: 2; right: -74px; top: -10px; width: 68px; height: 68px; }
+.r-hero-kid { position: absolute; z-index: 0; right: -14px; top: -14px; width: 244px; height: 244px; }
+
+/* ---------- ごあいさつ ---------- */
+.r-greeting { position: relative; padding-left: 34px; }
+.r-greeting-title { position: relative; color: var(--ink); font-size: 19px; font-weight: 800; }
+.r-greeting-ico { position: absolute; left: -36px; top: -3px; width: 32px; height: 33px; }
+.r-greeting-body { margin-top: 2px; font-size: 15px; line-height: 1.95; }
+.r-inline-ico { display: inline-block; width: 22px; height: 22px; margin-left: 4px; vertical-align: -5px; }
+
+/* ---------- カード共通 ---------- */
+.r-card { position: relative; margin-top: 18px; border-radius: 26px; }
+.r-label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 17px; font-weight: 800; white-space: nowrap; }
+.r-label-ico { flex: none; width: 26px; height: 26px; }
+.r-label-ico.wide { width: 32px; height: 28px; }
+.r-bubble { margin-top: 10px; padding: 10px 12px 12px; border-radius: 18px; background: #fff; box-shadow: 0 3px 0 #f6dcbf; }
+.fit { overflow: hidden; white-space: nowrap; }
+.fit.wrap { white-space: normal; overflow-wrap: anywhere; }
+
+/* ---------- 名前・学習・目標 ---------- */
+.r-profile { display: flex; padding: 18px 10px 16px 12px; border: 2px solid #fde2c6; background: #fff2e4; }
+.r-col { position: relative; min-width: 0; padding: 0 12px; }
+.r-col + .r-col { border-left: 2px dashed #f0c291; }
+.r-col-name { flex: 1.32; display: flex; align-items: center; gap: 10px; padding-left: 0; }
+.r-col-study,
+.r-col-goal { flex: 1; display: flex; flex-direction: column; }
+
+.r-avatar {
+  flex: none;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  background: #cfe8fb;
+  box-shadow: 0 3px 0 #f3d4b3;
+}
+.r-avatar > svg { display: block; width: 100%; height: 100%; }
+.r-name-block { flex: 1; min-width: 0; }
+.r-name { margin-top: 12px; color: var(--ink); font-size: 28px; font-weight: 800; line-height: 1.3; }
+.r-honorific { display: inline-block; margin-left: 6px; font-size: 0.6em; white-space: nowrap; }
+
+.r-study { color: var(--ink); font-size: 25px; font-weight: 800; line-height: 1.4; text-align: center; }
+.r-book { display: flex; justify-content: center; margin-top: 8px; padding: 4px 0 6px; }
+.r-book-cover {
+  width: 118px;
+  height: 94px;
+  padding: 8px 6px 0;
+  border: 2.5px solid #7cbde8;
+  border-radius: 8px 12px 12px 8px;
+  background: linear-gradient(135deg, #e3f3ff 0%, #bfe1fb 100%);
+  box-shadow: 5px 5px 0 #97cbee;
+  color: #2d6fb8;
+  font-weight: 800;
+  text-align: center;
+  transform: rotate(-7deg);
+}
+.r-book-line1 { overflow: hidden; font-size: 16px; line-height: 1.3; white-space: nowrap; }
+.r-book-line2 { font-size: 24px; line-height: 1.15; white-space: nowrap; }
+.r-book-line2 .unit { margin-left: 1px; font-size: 13px; }
+.r-book-line1.small { padding-top: 4px; font-size: 14px; white-space: normal; }
+.r-book-shapes { width: 72px; height: 20px; margin: 4px auto 0; }
+
+.r-goal { padding: 12px 12px 14px; }
+.r-goal-when { color: var(--ink); font-size: 23px; font-weight: 800; line-height: 1.35; }
+.r-goal-what { margin-top: 2px; color: var(--ink); font-size: 30px; font-weight: 800; line-height: 1.35; }
+/* 折り返したときも各行にマーカーが付くよう、行の高さごとに背景を繰り返す */
+.r-marker {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0 2px;
+  background-image: linear-gradient(transparent 58%, #ffc4d3 58%, #ffc4d3 94%, transparent 94%);
+  background-size: 100% 1.35em;
+}
+.r-chart { align-self: flex-end; width: 96px; height: 76px; margin-top: auto; padding-top: 6px; }
+
+/* ---------- 先生からのコメント ---------- */
+.r-comment { display: flex; align-items: center; gap: 4px; padding: 16px 20px 16px 4px; border: 2px solid #d0e6f9; background: #e4f1fc; }
+.r-teacher { flex: none; width: 152px; height: 174px; }
+.r-card-body { flex: 1; min-width: 0; }
+.r-pill-row { position: relative; display: flex; align-items: center; }
+.r-pill {
+  display: inline-block;
+  padding: 6px 26px 7px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.r-pill.blue { background: #58a6e6; box-shadow: 0 4px 0 #3d8bcd; }
+.r-pill.green { background: #4dac69; box-shadow: 0 4px 0 #398f54; }
+.r-pill-ico { position: relative; z-index: 1; flex: none; }
+.r-pill-ico.bulb { width: 36px; height: 46px; margin: -12px -4px 0 -6px; }
+.r-pill-ico.house { width: 52px; height: 48px; margin: -6px -12px 0 -4px; }
+
+.r-paper { margin-top: 12px; padding: 6px 22px 12px; border-radius: 18px; background: #fff; }
+.r-lined,
+.r-text { min-height: 80px; color: #3a3632; font-size: 18px; letter-spacing: 0.04em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.r-lined {
+  line-height: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='44'%3E%3Crect x='0' y='41.5' width='6' height='1.8' rx='0.9' fill='%23c6dbee'/%3E%3C/svg%3E");
+  background-size: 10px 44px;
+}
+.r-text { padding-top: 6px; line-height: 1.9; }
+.r-rays.top-right { position: absolute; right: 18px; top: -20px; width: 40px; height: 40px; }
+
+/* ---------- お家の方へ ---------- */
+.r-advice { display: flex; align-items: flex-end; gap: 2px; padding: 16px 6px 12px 16px; border: 2px solid #d8eecb; background: #edf8e4; }
+.r-advice .r-paper { box-shadow: 0 3px 0 rgba(77, 172, 105, 0.14); }
+.r-parent { flex: none; width: 176px; height: 162px; }
+
+/* ---------- メッセージ ---------- */
+.r-message { display: flex; align-items: center; padding: 14px 14px 14px 8px; border: 2px solid #fddbe4; background: #fff0f4; }
+.r-sakura { flex: none; width: 96px; height: 100px; margin-right: 10px; }
+.r-message-text { flex: 1; min-width: 0; }
+.r-message-main { color: var(--ink); font-size: 22px; font-weight: 800; line-height: 1.5; letter-spacing: 0.01em; }
+.r-message-main em { color: var(--pink); font-style: normal; }
+.r-message-main em.big { font-size: 32px; }
+.r-message-sub { margin-top: 4px; color: #5a524c; font-size: 15px; }
+.r-message-abacus { flex: none; width: 146px; height: 86px; transform: rotate(-7deg); }
+.r-rays.abacus-rays { position: absolute; right: 150px; top: 8px; width: 30px; height: 30px; transform: rotate(-60deg); }
+
+/* ---------- フッター ---------- */
+.r-footer { position: relative; margin-top: 16px; padding-right: 56px; }
+.r-footer-card { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 20px; background: #e9f3fd; }
+.r-footer-ico { flex: none; width: 48px; height: 44px; }
+.r-footer p { color: #4a4643; font-size: 14px; line-height: 1.75; }
+.r-clover { position: absolute; right: 0; bottom: -6px; width: 52px; height: 60px; }
+
+/* 未入力のときのプレビュー表示（PNG保存前に確認されます） */
+.report .is-empty { color: #b9aea4; }
